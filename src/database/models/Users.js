@@ -7,6 +7,7 @@ Users.init({
     userName: { type: DataTypes.STRING(20), allowNull: false, unique: true },
     userMail: { type: DataTypes.STRING(60), allowNull: false, unique: true },
     userDate: { type: DataTypes.DATE, allowNull: false },
+    userRole: { type: DataTypes.INTEGER, allowNull: false }
 },
 {
     sequelize,

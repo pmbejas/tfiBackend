@@ -73,15 +73,16 @@ export const getUserByMail = async (mail) => {
 export const createUser = async (Datos) => {
     const transaction = await sequelize.transaction();
   try {
-    if (!Datos.userName || !Datos.userMail || !Datos.userDate || !Datos.password) {
+    if (!Datos.userName || !Datos.userMail || !Datos.userDate || !Datos.userRole || !Datos.password) {
       throw new Error('Faltan campos obligatorios');
     }
     const userData = {
         userName: Datos.userName,
         userMail: Datos.userMail,
         userDate: Datos.userDate,
-        userRole: Datos.userRole
+        userRole: Datos.userRole,
     }
+
     const nuevoUsuario = await Users.create(userData, { transaction});
     
     const hoy = new Date();
