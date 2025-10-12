@@ -1,6 +1,7 @@
-import Passwords from '../database/models/Passwords.js';
-import { sequelize } from '../database/config.js';
 import { QueryTypes } from 'sequelize';
+import { models, sequelize } from '../database/models/Relaciones.js';
+
+const { Passwords } = models;
 
 export const getPasswordByUserId = async (userId) => {
     const query = `SELECT password, stateId, expirationDate, resetToken

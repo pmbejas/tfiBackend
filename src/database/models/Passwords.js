@@ -12,7 +12,8 @@ Passwords.init({
 },
 {
     sequelize,
-    modelName: "userpasswords",
+    modelName: "Passwords",
+    tableName: "userpasswords",
 });
 
 export default Passwords;

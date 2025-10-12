@@ -1,9 +1,8 @@
-import Users from '../database/models/Users.js';
-import Passwords from '../database/models/Passwords.js';
-import { sequelize } from '../database/config.js';
 import { QueryTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
+import { models, sequelize } from '../database/models/Relaciones.js';
 
+const { Users, Passwords } = models;
 
 export const getUsers = async () => {
     const query = 'SELECT * FROM users';

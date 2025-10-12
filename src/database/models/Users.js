@@ -11,8 +11,10 @@ Users.init({
 },
 {
     sequelize,
-    modelName: "users",
+    modelName: "Users",
+    tableName: "users",
 }
 );
+
 
 export default Users;
