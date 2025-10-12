@@ -11,7 +11,7 @@ export const sequelize = new Sequelize(
     dialect: config.database_dialect || 'mysql',
     logging: config.database_logging === 'true' ? console.log : false,
     define: {
-      timestamps: false, // controlaremos timestamps a mano
+      timestamps: false,
       underscored: false,
       freezeTableName: true,
     }
