@@ -71,50 +71,54 @@ export const getUserByMail = async (mail) => {
 
 export const createUser = async (Datos) => {
     const transaction = await sequelize.transaction();
-  try {
-    if (!Datos.userName || !Datos.userMail || !Datos.userDate || !Datos.userRole || !Datos.password) {
-      throw new Error('Faltan campos obligatorios');
-    }
-    const userData = {
-        userName: Datos.userName,
-        userMail: Datos.userMail,
-        userDate: Datos.userDate,
-        userRole: Datos.userRole,
-    }
-
-    const nuevoUsuario = await Users.create(userData, { transaction});
+    try {
+        if (!Datos.userName || 
+            !Datos.userMail || 
+            !Datos.userDate || 
+            !Datos.userRole || 
+            !Datos.password) {
+            throw new Error('Faltan campos obligatorios');
+        }
     
-    const hoy = new Date();
-    const expiracionUTC = new Date(Date.UTC(
-    hoy.getUTCFullYear(),
-    hoy.getUTCMonth() + 6,
-    hoy.getUTCDate(),
-    hoy.getUTCHours(),
-    hoy.getUTCMinutes(),
-    hoy.getUTCSeconds(),
-    hoy.getUTCMilliseconds()
-    ));   
-    const hashedPassword = await bcrypt.hash(Datos.password, 10);
-    const dataToSave = {
-        userId: nuevoUsuario.id,
-        password: hashedPassword,
-        stateId: 1,
-        expirationDate: expiracionUTC,
-        resetToken: null
-    }
-    await Passwords.create(dataToSave, { transaction });
-    await transaction.commit();    
-    return {
-      success: true,
-      message: 'Usuario creado correctamente',
-      data: nuevoUsuario.get({ plain: true })
-    };
+        const userData = {
+            userName: Datos.userName,
+            userMail: Datos.userMail,
+            userDate: Datos.userDate,
+            userRole: Datos.userRole,
+        }
 
-  } catch (error) {
-    await transaction.rollback();
-    console.error('Error creando usuario:', error);
-    throw new Error('Error al crear el usuario');
-  }
+        const nuevoUsuario = await Users.create(userData, {transaction});
+        
+        const hoy = new Date();
+        const expiracionUTC = new Date(Date.UTC(
+        hoy.getUTCFullYear(),
+        hoy.getUTCMonth() + 6,
+        hoy.getUTCDate(),
+        hoy.getUTCHours(),
+        hoy.getUTCMinutes(),
+        hoy.getUTCSeconds(),
+        hoy.getUTCMilliseconds()
+        ));   
+        const hashedPassword = await bcrypt.hash(Datos.password, 10);
+        const dataToSave = {
+            userId: nuevoUsuario.id,
+            password: hashedPassword,
+            stateId: 1,
+            expirationDate: expiracionUTC,
+            resetToken: null
+        }
+        await Passwords.create(dataToSave, { transaction });
+        await transaction.commit();    
+        return {
+            success: true,
+            message: 'Usuario creado correctamente',
+            data: nuevoUsuario.get({ plain: true })
+        };
+    } catch (error) {
+        await transaction.rollback();
+        console.error('Error creando usuario:', error);
+        throw new Error('Error al crear el usuario');
+    }
 }
 
 export const Login = async (email, password) => {
@@ -122,10 +126,12 @@ export const Login = async (email, password) => {
         if (!email || !password) {
         throw new Error('Faltan campos obligatorios');
         }
-        const query = `SELECT users.*, userpasswords.password 
-                            FROM users 
-                            JOIN userpasswords on users.id = userpasswords.userId
-                            WHERE userMail = :mail`;
+        const query = `SELECT u.id, u.userName, u.userMail, u.userDate, u.userRole, 
+                              ur.nombre as rol, up.password 
+                            FROM users u 
+                            JOIN userpasswords up on u.id = up.userId
+                            JOIN userroles ur on u.userRole = ur.id
+                            WHERE u.userMail = :mail`;
         const loggedUser = await sequelize.query(
             query,
             {
@@ -144,7 +150,8 @@ export const Login = async (email, password) => {
             userId: loggedUser[0].id,
             userName: loggedUser[0].userName,
             userMail: loggedUser[0].userMail,
-            userRole: loggedUser[0].userRole
+            userRoleId: loggedUser[0].userRole,
+            userRoleName: loggedUser[0].rol
         }; 
         return returnedValue;
     }  catch (error) {

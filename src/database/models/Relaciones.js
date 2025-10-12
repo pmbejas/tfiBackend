@@ -2,8 +2,12 @@ import { sequelize } from '../config.js';
 import UserRoles from './UserRoles.js';
 import Users from './Users.js';
 import Passwords from './Passwords.js';
+import PasswordState from './PaswordState.js';
 
 function aplicarRelaciones() {
+
+ /* Definición de relaciones respecto a USERS y PASSWORD */
+
   Users.belongsTo(UserRoles, {
     foreignKey: 'userRole',
     targetKey: 'id',
@@ -33,7 +37,25 @@ function aplicarRelaciones() {
     targetKey: 'id',
     as: 'passwordUser'
   });
+
+  Passwords.belongsTo(PasswordState, {
+    foreignKey: 'stateId',
+    targetKey: 'id',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    as: 'passwordState'
+  });
+
+  PasswordState.hasMany(Passwords, {
+    foreignKey: 'stateId',
+    sourceKey: 'id',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
+    as: 'statePassword'
+  })
 } 
+
+
 
 aplicarRelaciones();
 
