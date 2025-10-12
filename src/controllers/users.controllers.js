@@ -116,6 +116,7 @@ export const Login = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      message: 'Login exitoso',
       data: user,
     });
   } catch (error) {

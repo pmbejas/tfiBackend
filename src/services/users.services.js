@@ -146,11 +146,7 @@ export const Login = async (email, password) => {
             userMail: loggedUser[0].userMail,
             userRole: loggedUser[0].userRole
         }; 
-        return { 
-            success: true, 
-            message: 'Login exitoso', 
-            data: returnedValue
-        }
+        return returnedValue;
     }  catch (error) {
         console.error('Error obteniendo usuario:', error);
         throw error;
