@@ -127,7 +127,7 @@ export const Login = async (email, password) => {
         throw new Error('Faltan campos obligatorios');
         }
         const query = `SELECT u.id, u.userName, u.userMail, u.userDate, u.userRole, 
-                              ur.nombre as rol, up.password 
+                              ur.name as rol, up.password 
                             FROM users u 
                             JOIN userpasswords up on u.id = up.userId
                             JOIN userroles ur on u.userRole = ur.id
