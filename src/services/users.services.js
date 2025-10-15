@@ -140,11 +140,11 @@ export const Login = async (email, password) => {
             }
         );
         if (loggedUser.length === 0) {
-            throw new Error('Credenciales inválidas');
+            return null;
         }
         const isPasswordValid = await bcrypt.compare(password, loggedUser[0].password);
         if (!isPasswordValid) {
-            throw new Error('Credenciales inválidas');
+            return null;
         }
         const returnedValue = {
             userId: loggedUser[0].id,

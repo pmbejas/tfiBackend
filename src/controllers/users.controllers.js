@@ -108,9 +108,9 @@ export const Login = async (req, res) => {
     
     const user = await UserService.Login(email, password);
     if (!user) {
-      return res.status(404).json({
+      return res.status(204).json({
         success: false,
-        message: 'Usuario no encontrado',
+        message: 'Credenciales Invalidas',
       });
     }
 
