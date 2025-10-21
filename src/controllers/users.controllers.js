@@ -128,3 +128,15 @@ export const Login = async (req, res) => {
     });
   }
 };
+
+export const updateUser = async (req, res) => {
+    console.log('updateUser controller called');
+};
+
+export const updatePassword = async (req, res) => {
+    console.log('updateUser controller called');
+};
+
+export const deleteUser = async (req, res) => {
+    console.log('deleteUser controller called');
+};

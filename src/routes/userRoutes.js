@@ -6,6 +6,9 @@ router.get('/', UserController.getUsers);
 router.get('/:id', UserController.getUserById);
 router.post('/by-email', UserController.getUserByMail);
 router.post('/', UserController.createUser);
+router.put('/user/', UserController.updateUser);
+router.put('/pass/', UserController.updatePassword);
+router.delete('/:id', UserController.deleteUser);
 router.post('/login', UserController.Login);
 
 export default router;

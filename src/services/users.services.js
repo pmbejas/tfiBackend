@@ -1,6 +1,8 @@
 import { QueryTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { models, sequelize } from '../database/models/Relaciones.js';
+import jwt from 'jsonwebtoken';
+import { secretJWTKey } from '../config.js';
 
 const { Users, Passwords } = models;
 
@@ -146,14 +148,14 @@ export const Login = async (email, password) => {
         if (!isPasswordValid) {
             return null;
         }
-        const returnedValue = {
-            userId: loggedUser[0].id,
-            userName: loggedUser[0].userName,
-            userMail: loggedUser[0].userMail,
-            userRoleId: loggedUser[0].userRole,
-            userRoleName: loggedUser[0].rol
-        }; 
-        return returnedValue;
+        const token = jwt.sign({ 
+                                userId: loggedUser[0].id, 
+                                userName: loggedUser[0].userName,
+                                userMail: loggedUser[0].userMail,
+                                userRoleId: loggedUser[0].userRole,
+                                userRoleName: loggedUser[0].rol
+                            }, secretJWTKey, { expiresIn: '6h' });
+        return token;
     }  catch (error) {
         console.error('Error obteniendo usuario:', error);
         throw error;
