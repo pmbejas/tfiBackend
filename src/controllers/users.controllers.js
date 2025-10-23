@@ -1,4 +1,5 @@
 import { UserService } from '../services/services.index.js';
+import { generateTokens, signAccessToken } from '../security/authToken.js';
 
 export const getUsers = async (req, res) => {
   try {
@@ -95,40 +96,6 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const Login = async (req, res) => {
-  try {
-    if (!req.body.email || !req.body.password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Faltan campos obligatorios: email y password',
-      });
-    } 
-    const email = String(req.body.email).trim();
-    const password = String(req.body.password).trim();
-    
-    const user = await UserService.Login(email, password);
-    if (!user) {
-      return res.status(204).json({
-        success: false,
-        message: 'Credenciales Invalidas',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Login exitoso',
-      data: user,
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Error interno al realizar Login',
-      error: error.message
-    });
-  }
-};
-
 export const updateUser = async (req, res) => {
     console.log('updateUser controller called');
 };
@@ -140,3 +107,43 @@ export const updatePassword = async (req, res) => {
 export const deleteUser = async (req, res) => {
     console.log('deleteUser controller called');
 };
+
+
+export const Login = async (req, res) => {
+  try {
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Faltan campos obligatorios: email y password',
+      });
+    } 
+    const email = String(req.body.email).trim();
+    const password = String(req.body.password).trim();
+    
+    const data = await UserService.Login(email, password);
+    
+    let accessToken = null;
+    if (data.success) {
+      const { accessToken: token, refreshToken, jti } = generateTokens(data);
+      accessToken = token;
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true
+      });
+    }
+    
+    return res.status(data.responseCode).json({
+      success: data.success,
+      message: data.message,
+      accessToken: accessToken? accessToken : undefined,
+      data: data.user? data.user : undefined,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno al realizar Login',
+      error: error.message
+    });
+  }
+};
+

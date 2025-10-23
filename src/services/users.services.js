@@ -1,9 +1,6 @@
 import { QueryTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { models, sequelize } from '../database/models/Relaciones.js';
-import jwt from 'jsonwebtoken';
-import { secretJWTKey } from '../config.js';
-
 const { Users, Passwords } = models;
 
 export const getUsers = async () => {
@@ -142,22 +139,22 @@ export const Login = async (email, password) => {
             }
         );
         if (loggedUser.length === 0) {
-            return null;
+            return { success: false, responseCode:401, message: 'Unauthorized' };
         }
         const isPasswordValid = await bcrypt.compare(password, loggedUser[0].password);
         if (!isPasswordValid) {
-            return null;
+            return { success: false, responseCode:401, message: 'Unauthorized' };
         }
-        const token = jwt.sign({ 
-                                userId: loggedUser[0].id, 
-                                userName: loggedUser[0].userName,
-                                userMail: loggedUser[0].userMail,
-                                userRoleId: loggedUser[0].userRole,
-                                userRoleName: loggedUser[0].rol
-                            }, secretJWTKey, { expiresIn: '6h' });
-        return token;
+        const userData = {
+            id: loggedUser[0].id,
+            userName: loggedUser[0].userName,
+            userMail: loggedUser[0].userMail,
+            userRoleId: loggedUser[0].userRole,
+            userRoleName: loggedUser[0].rol
+        };
+        return { success: true, responseCode:200, message: 'Login Exitoso', user: userData};
     }  catch (error) {
         console.error('Error obteniendo usuario:', error);
-        throw error;
+        return { success: false, responseCode:500, message: 'Error interno del servidor' };
     }
 }
