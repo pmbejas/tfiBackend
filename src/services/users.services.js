@@ -47,7 +47,7 @@ export const getUserById = async (id) => {
 export const getUserByMail = async (mail) => {
     const query = `SELECT * 
                         FROM users 
-                        WHERE userMail = :mail'
+                        WHERE userMail = :mail
                         LIMIT 1`;
     try {
         const user = await sequelize.query(
