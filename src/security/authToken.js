@@ -48,8 +48,16 @@ export const generateTokens = (user) => {
 
 
 export function verifyAccessToken(token) {
-  return jwt.verify(token, JWT_ACCESS_SECRET, {
-    issuer: ISSUER,
-    audience: AUDIENCE,
+
+  return jwt.verify(token, config.jwtAccessTokenSecretWord, {
+    issuer: config.jwtIssuer,
+    audience: config.jwtAudience,
+  });
+}
+
+export function verifyRefreshToken(token) {
+  return jwt.verify(token, config.jwtRefreshTokenSecretWord, {
+    issuer: config.jwtIssuer,
+    audience: config.jwtAudience,
   });
 }

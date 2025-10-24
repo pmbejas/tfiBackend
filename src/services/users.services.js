@@ -11,11 +11,11 @@ export const getUsers = async () => {
             { type: QueryTypes.SELECT }
         );
         if (users.length === 0) {
-            return null;
+            return { success: false, responseCode:404, message: 'No Content', data: null};
         }
-        return users;  
+        return { success: true, responseCode:200, message: 'Datos Encontrados', data: users};  
     } catch (error) {
-        console.error('Error obteniendo usuarios:', error);
+        console.error('Error en userServices.getUsers:', error);
         throw error;
     }
 }
@@ -34,12 +34,12 @@ export const getUserById = async (id) => {
             }
         );
         if (user.length === 0) { 
-            return null; 
+            return { success: false, responseCode:404, message: 'No Content', data: null}; 
         } else {
-            return user[0];  
+            return { success: true, responseCode:200, message: 'Datos Encontrados', data: user[0]};   
         }
     } catch (error) {
-        console.error('Error obteniendo usuario:', error);
+        console.error('Error en userServices.getUserById:', error);
         throw error;
     }
 }
@@ -58,9 +58,9 @@ export const getUserByMail = async (mail) => {
             }
         );
         if (user.length === 0) { 
-            return null; 
+            return { success: false, responseCode:404, message: 'No Content', data: null}; 
         } else {
-            return user[0];  
+            return { success: true, responseCode:200, message: 'Datos Encontrados', data: user[0]};   
         }
     } catch (error) {
         console.error('Error obteniendo usuario:', error);
@@ -110,13 +110,14 @@ export const createUser = async (Datos) => {
         await transaction.commit();    
         return {
             success: true,
+            responseCode:201,
             message: 'Usuario creado correctamente',
             data: nuevoUsuario.get({ plain: true })
         };
     } catch (error) {
         await transaction.rollback();
-        console.error('Error creando usuario:', error);
-        throw new Error('Error al crear el usuario');
+        console.error('error en userServices.CreateUSer:', error);
+        throw error;
     }
 }
 

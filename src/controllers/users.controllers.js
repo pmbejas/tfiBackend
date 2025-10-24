@@ -4,12 +4,13 @@ import { generateTokens, signAccessToken } from '../security/authToken.js';
 export const getUsers = async (req, res) => {
   try {
     const users = await UserService.getUsers();
-    return res.status(200).json({
-      success: true,
-      data: users ?? [],
+    return res.status(users.responseCode).json({
+      success: users.success,
+      message: users.message,
+      data: users.data ?? [],
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error en getusers:', error);
     return res.status(500).json({
       success: false,
       message: 'Error interno al obtener usuarios',
@@ -20,25 +21,22 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const id = Number(req.params.id);
+    
     if (!Number.isInteger(id) || id <= 0) {
       return res.status(400).json({
         success: false,
-        message: 'El parámetro "id" debe ser un entero positivo',
+        message: 'El parámetro "id" no válido.',
       });
     }
 
     const user = await UserService.getUserById(id);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'Usuario no encontrado',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: user,
+    
+    return res.status(user.responseCode).json({
+      success: user.success,
+      message: user.message,
+      data: user.data?? null,
     });
+
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({
@@ -53,17 +51,13 @@ export const getUserByMail = async (req, res) => {
     const email = String(req.body.email).trim();
 
     const user = await UserService.getUserByMail(email);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'Usuario no encontrado',
-      });
-    }
 
-    return res.status(200).json({
-      success: true,
-      data: user,
+    return res.status(user.responseCode).json({
+      success: user.success,
+      message: user.message,
+      data: user.data?? null,
     });
+
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({
@@ -87,6 +81,7 @@ export const createUser = async (req, res) => {
 
     const resultado = await UserService.createUser(datosUsuario);
     return res.status(201).json(resultado);
+    
   } catch (error) {
     console.error('Error:', error);
     return res.status(400).json({

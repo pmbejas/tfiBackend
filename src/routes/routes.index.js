@@ -1,4 +1,4 @@
-import userRoutes from './userRoutes.js';
+import userRoutes from './user.routes.js';
 import config from '../config.js';
 
 export function registerRoutes(app) {
@@ -8,5 +8,5 @@ export function registerRoutes(app) {
     });
 
     app.use(config.defaultRoute +'/users', userRoutes);
-
+    
 }
