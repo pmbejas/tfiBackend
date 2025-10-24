@@ -120,7 +120,7 @@ export const Login = async (req, res) => {
     let accessToken = null;
     if (data.success) {
       const { accessToken: token, refreshToken, jti } = generateTokens(data);
-      accessToken = token;
+      accessToken = token
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true
       });
