@@ -4,14 +4,17 @@ import { models, sequelize } from '../database/models/Relaciones.js';
 const { Users, Passwords } = models;
 
 export const getUsers = async () => {
-    const query = 'SELECT * FROM users';
+    const query = `SELECT u.*, ur.name as roleName
+                    FROM users u
+                    JOIN userroles ur
+                    WHERE ur.id = u.userRole`;
     try {
         const users = await sequelize.query(
             query,
             { type: QueryTypes.SELECT }
         );
         if (users.length === 0) {
-            return { success: false, responseCode:404, message: 'No Content', data: null};
+            return { success: false, responseCode:204, message: 'No Content', data: null};
         }
         return { success: true, responseCode:200, message: 'Datos Encontrados', data: users};  
     } catch (error) {

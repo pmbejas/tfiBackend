@@ -13,7 +13,7 @@ export const getProveedores = async () => {
         if (proveedores.length === 0) {
             return { success: false, responseCode:204, message: 'No Content', data: null};
         }
-        return { success: true, responseCode:204, message: 'Datos Encontrados', data: proveedores[0]};
+        return { success: true, responseCode:200, message: 'Datos Encontrados', data: proveedores[0]};
         
     } catch (error) {
         console.error('Error en proveedorService.getProveedores:', error);
