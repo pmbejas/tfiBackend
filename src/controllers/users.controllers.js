@@ -103,7 +103,30 @@ export const updatePassword = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  console.log("deleteUser controller called");
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'El parámetro "id" no válido.',
+      });
+    }
+
+    const user = await UserService.deleteUser(id);
+
+    return res.status(user.responseCode).json({
+      success: user.success,
+      message: user.message,
+      data: user.data ?? null,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error interno al obtener el usuario",
+    });
+  }
 };
 
 export const Login = async (req, res) => {

@@ -124,6 +124,31 @@ export const createUser = async (Datos) => {
     }
 }
 
+export const deleteUser = async (id) => {
+    const query = `SELECT id 
+                        FROM users 
+                        WHERE id = :id
+                        LIMIT 1`;
+    try {
+        const user = await sequelize.query(
+            query,
+            { 
+                replacements: { id },
+                type: QueryTypes.SELECT
+            }
+        );
+        if (user.length === 0) { 
+            return { success: false, responseCode:404, message: 'Usuario no encontrado', data: null}; 
+        } else {
+            user.destroy();
+            return { success: true, responseCode:200, message: 'Usuario Eliminado de la DB', data: null};   
+        }
+    } catch (error) {
+        console.error('Error en userServices.deleteUser:', error);
+        throw error;
+    }
+}
+
 export const Login = async (email, password) => {
     try {
         if (!email || !password) {
