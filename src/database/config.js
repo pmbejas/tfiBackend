@@ -11,11 +11,11 @@ export const sequelize = new Sequelize(
     dialect: config.database_dialect || 'mysql',
     logging: config.database_logging === 'true' ? console.log : false,
     define: {
-      timestamps: false,
+      timestamps: true,
       underscored: false,
       freezeTableName: true,
       paranoid: true,
-      deletedAt: 'deletedAt'
+      deletedAt: 'deletedAt',
     }
   }
 );

@@ -7,7 +7,7 @@ export const getUsers = async () => {
   const query = `SELECT u.*, ur.name as roleName
                     FROM users u
                     JOIN userroles ur
-                    WHERE ur.id = u.userRole`;
+                    WHERE ur.id = u.userRole and u.deletedAt IS NULL`;
   try {
     const users = await sequelize.query(query, { type: QueryTypes.SELECT });
     if (users.length === 0) {
