@@ -14,6 +14,8 @@ export const sequelize = new Sequelize(
       timestamps: false,
       underscored: false,
       freezeTableName: true,
+      paranoid: true,
+      deletedAt: 'deletedAt'
     }
   }
 );
