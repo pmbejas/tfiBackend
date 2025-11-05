@@ -33,7 +33,7 @@ export const getUsers = async () => {
 export const getUserById = async (id) => {
   const query = `SELECT * 
                         FROM users 
-                        WHERE id = :id
+                        WHERE id = :id AND deletedAt IS NULL
                         LIMIT 1`;
   try {
     const user = await sequelize.query(query, {
@@ -64,7 +64,7 @@ export const getUserById = async (id) => {
 export const getUserByMail = async (mail) => {
   const query = `SELECT * 
                         FROM users 
-                        WHERE userMail = :mail
+                        WHERE userMail = :mail AND deletedAt IS NULL
                         LIMIT 1`;
   try {
     const user = await sequelize.query(query, {
@@ -74,7 +74,7 @@ export const getUserByMail = async (mail) => {
     if (user.length === 0) {
       return {
         success: false,
-        responseCode: 404,
+        responseCode: 204,
         message: "No Content",
         data: null,
       };
@@ -184,7 +184,7 @@ export const Login = async (email, password) => {
                             FROM users u 
                             JOIN userpasswords up on u.id = up.userId
                             JOIN userroles ur on u.userRole = ur.id
-                            WHERE u.userMail = :mail`;
+                            WHERE u.userMail = :mail AND u.deletedAt IS NULL`;
     const loggedUser = await sequelize.query(query, {
       replacements: { mail: email },
       type: QueryTypes.SELECT,
