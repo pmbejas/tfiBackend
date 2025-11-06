@@ -69,9 +69,9 @@ export const createUser = async (req, res) => {
   try {
     const datosUsuario = req.body;
     const required = [
+      "userLastName",
       "userName",
-      "userMail",
-      "userDate",
+      "userEmail",
       "userRole",
       "password",
     ];

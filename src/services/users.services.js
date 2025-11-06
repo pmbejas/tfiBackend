@@ -7,7 +7,8 @@ export const getUsers = async () => {
   const query = `SELECT u.*, ur.name as roleName
                     FROM users u
                     JOIN userroles ur
-                    WHERE ur.id = u.userRole and u.deletedAt IS NULL`;
+                    WHERE ur.id = u.userRole and u.deletedAt IS NULL
+                    ORDER BY u.userName, u.userLastName ASC`;
   try {
     const users = await sequelize.query(query, { type: QueryTypes.SELECT });
     if (users.length === 0) {
@@ -43,7 +44,7 @@ export const getUserById = async (id) => {
     if (user.length === 0) {
       return {
         success: false,
-        responseCode: 404,
+        responseCode: 204,
         message: "No Content",
         data: null,
       };
@@ -64,7 +65,7 @@ export const getUserById = async (id) => {
 export const getUserByMail = async (mail) => {
   const query = `SELECT * 
                         FROM users 
-                        WHERE userMail = :mail AND deletedAt IS NULL
+                        WHERE userEmail = :mail AND deletedAt IS NULL
                         LIMIT 1`;
   try {
     const user = await sequelize.query(query, {
@@ -96,9 +97,9 @@ export const createUser = async (Datos) => {
   const transaction = await sequelize.transaction();
   try {
     if (
+      !Datos.userLastName ||
       !Datos.userName ||
-      !Datos.userMail ||
-      !Datos.userDate ||
+      !Datos.userEmail ||
       !Datos.userRole ||
       !Datos.password
     ) {
@@ -106,9 +107,10 @@ export const createUser = async (Datos) => {
     }
 
     const userData = {
+      userLastName: Datos.userLastName,
       userName: Datos.userName,
-      userMail: Datos.userMail,
-      userDate: Datos.userDate,
+      userEmail: Datos.userEmail,
+      userBirthDate: Datos.userBirthDate || null,
       userRole: Datos.userRole,
     };
 
@@ -179,12 +181,12 @@ export const Login = async (email, password) => {
     if (!email || !password) {
       throw new Error("Faltan campos obligatorios");
     }
-    const query = `SELECT u.id, u.userName, u.userMail, u.userDate, u.userRole, 
+    const query = `SELECT u.id, u.userLastName, u.userName, u.userEmail, u.userBirthDate, u.userRole, 
                               ur.name as rol, up.password 
                             FROM users u 
                             JOIN userpasswords up on u.id = up.userId
                             JOIN userroles ur on u.userRole = ur.id
-                            WHERE u.userMail = :mail AND u.deletedAt IS NULL`;
+                            WHERE u.userEmail = :mail AND u.deletedAt IS NULL`;
     const loggedUser = await sequelize.query(query, {
       replacements: { mail: email },
       type: QueryTypes.SELECT,
@@ -201,8 +203,8 @@ export const Login = async (email, password) => {
     }
     const userData = {
       id: loggedUser[0].id,
-      userName: loggedUser[0].userName,
-      userMail: loggedUser[0].userMail,
+      userFullName: loggedUser[0].userName +" " + loggedUser[0].userLastName,
+      userEmail: loggedUser[0].userEmail,
       userRoleId: loggedUser[0].userRole,
       userRoleName: loggedUser[0].rol,
     };
