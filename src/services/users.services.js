@@ -181,11 +181,12 @@ export const Login = async (email, password) => {
     if (!email || !password) {
       throw new Error("Faltan campos obligatorios");
     }
-    const query = `SELECT u.id, u.userLastName, u.userName, u.userEmail, u.userBirthDate, u.userRole, 
+    const query = `SELECT u.id, u.userLastName, u.userName, u.userEmail, u.userBirthDate, u.userRole, pr.darkMode,
                               ur.name as rol, up.password 
                             FROM users u 
                             JOIN userpasswords up on u.id = up.userId
                             JOIN userroles ur on u.userRole = ur.id
+                            JOIN preferencias pr ON pr.userId = u.id
                             WHERE u.userEmail = :mail AND u.deletedAt IS NULL`;
     const loggedUser = await sequelize.query(query, {
       replacements: { mail: email },
@@ -207,6 +208,7 @@ export const Login = async (email, password) => {
       userEmail: loggedUser[0].userEmail,
       userRoleId: loggedUser[0].userRole,
       userRoleName: loggedUser[0].rol,
+      darkMode: loggedUser[0].darkMode === 1 ? true : false
     };
     return {
       success: true,

@@ -24,6 +24,8 @@ import Ventas from './Ventas.js';
 import DetalleVentas from './DetalleVentas.js';
 import Compras from './Compras.js';
 import DetalleCompras from './DetalleCompras.js';
+import Permisos from './Permisos.js';
+import Menus from './Menus.js';
 
 function aplicarRelaciones() {
 
@@ -448,6 +450,38 @@ function aplicarRelaciones() {
     onUpdate: 'CASCADE',
     as: 'FKComprasDetalleCompras'
   });
+
+  Menus.hasMany(Permisos, {
+    foreignKey: 'menuId',
+    sourceKey: 'id',  
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKMenusPermisos'
+  });
+  
+  Permisos.belongsTo(Menus, {
+    foreignKey: 'menuId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKPermisosMenus'
+  });
+  
+  Permisos.belongsTo(Users, { 
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKPermisosUsers'
+  });
+  
+  Users.hasMany(Permisos, {
+    foreignKey: 'userId',
+    sourceKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKUsersPermisos'
+  });
  
 } 
 
@@ -479,7 +513,9 @@ export const models = {
   Ventas,
   DetalleVentas,
   Compras,
-  DetalleCompras
+  DetalleCompras,
+  Menus,
+  Permisos
 };
 
 export { sequelize };

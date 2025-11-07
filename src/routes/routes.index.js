@@ -1,5 +1,7 @@
 import userRoutes from './user.routes.js';
 import roleRoutes from './roles.routes.js';
+import menuRoutes from './menus.routes.js';
+
 import config from '../config.js';
 
 export function registerRoutes(app) {
@@ -10,4 +12,5 @@ export function registerRoutes(app) {
 
     app.use(config.defaultRoute +'/users', userRoutes);
     app.use(config.defaultRoute +'/roles', roleRoutes);   
+    app.use(config.defaultRoute +'/menus', menuRoutes);
 }
