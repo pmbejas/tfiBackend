@@ -193,6 +193,7 @@ export const Login = async (email, password) => {
       type: QueryTypes.SELECT,
     });
     if (loggedUser.length === 0) {
+      console.log("USUARIO INVALIDO")
       return { success: false, responseCode: 401, message: "Unauthorized" };
     }
     const isPasswordValid = await bcrypt.compare(
@@ -200,6 +201,7 @@ export const Login = async (email, password) => {
       loggedUser[0].password
     );
     if (!isPasswordValid) {
+      console.log("CONTRASEÑA INVALIDA")
       return { success: false, responseCode: 401, message: "Unauthorized" };
     }
     const userData = {
