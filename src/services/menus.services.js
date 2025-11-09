@@ -16,11 +16,12 @@ export const getMenus = async () => {
         data: null,
       };
     }
+    const menuTree = createMenuTree(menus);
     return {
       success: true,
       responseCode: 200,
       message: "Datos Encontrados",
-      data: menus,
+      data: menuTree,
     };
   } catch (error) {
     console.error("Error en menusServices.getMenus:", error);

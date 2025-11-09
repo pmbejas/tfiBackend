@@ -36,17 +36,17 @@ export const getMenusByUserId = async (req, res) => {
 
 export const getPermisosByUserId = async (req, res) => {
   try {
-    const permisos = await MenuSservice.getPermisosByUserId(req.params.id);  
+    const permisos = await MenusService.getPermisosByUserId(req.params.id);  
     return res.status(permisos.responseCode).json({
       success: permisos.success,
       message: permisos.message,
       data: permisos.data ?? [],
     });
   } catch (error) {
-    console.error("Error en getusers:", error);
+    console.error("Error en getPErmisosByUserId:", error);
     return res.status(500).json({
       success: false,
-      message: "Error interno al obtener usuarios",
+      message: "Error interno al obtener los permisos del usuario",
     });
   }
 };

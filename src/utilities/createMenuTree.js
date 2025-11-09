@@ -6,6 +6,7 @@ export const createMenuTree = (data) => {
     const submenus = data.filter(subMenuItem => subMenuItem.parentId === rootItem.id);
 
     const menu = {
+      id: rootItem.id,
       title: rootItem.title,
       url: rootItem.url,
       icon: rootItem.icon || null,
@@ -15,6 +16,7 @@ export const createMenuTree = (data) => {
 
     if (submenus.length > 0) {
       menu.submenu = submenus.map(sub => ({
+        id: sub.id,
         title: sub.title,
         url: sub.url,
         orden: sub.orden,
