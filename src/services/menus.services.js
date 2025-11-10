@@ -1,6 +1,7 @@
-import { models, sequelize } from "../database/models/Relaciones.js";
-const { Menus, Permisos } = models;
+import { Op } from "sequelize";
+import { models } from "../database/models/Relaciones.js";
 import { createMenuTree } from "../utilities/createMenuTree.js";
+const { Menus, Permisos } = models;
 
 export const getMenus = async () => {
   try {
@@ -30,38 +31,38 @@ export const getMenus = async () => {
 };
 
 export const getMenusByUserId = async (userId) => {
-    try {
-        const menus = await Menus.findAll({
-            include: [
-                {
-                    model: Permisos,
-                    as: "FKMenusPermisos",
-                    required: true,
-                    attributes: [],
-                    where: { userId },
-                },
+  try {
+    const menus = await Menus.findAll({
+      include: [
+        {
+          model: Permisos,
+          as: "FKMenusPermisos",
+          required: true,
+          attributes: [],
+          where: { userId },
+        },
       ],
       order: [["orden", "ASC"]],
     });
     if (menus.length === 0) {
-        return {
-            success: false,
-            responseCode: 204,
-            message: "No Content",
-            data: null,
-        };
+      return {
+        success: false,
+        responseCode: 204,
+        message: "No Content",
+        data: null,
+      };
     }
     const filteredMenus = createMenuTree(menus);
     return {
-        success: true,
-        responseCode: 200,
-        message: "Datos Encontrados",
-        data: filteredMenus,
+      success: true,
+      responseCode: 200,
+      message: "Datos Encontrados",
+      data: filteredMenus,
     };
-} catch (error) {
+  } catch (error) {
     console.error("Error en menusServices.getMenuByUserId:", error);
     throw error;
-}
+  }
 };
 
 export const getPermisosByUserId = async (userId) => {
@@ -89,16 +90,53 @@ export const getPermisosByUserId = async (userId) => {
   }
 };
 
-export const updatePermisosByUserId = (datos) => {
+export const updatePermisosByUserId = async (datos) => {
   try {
-      console.log(datos);
-      return {
-        success: true,
-        responseCode: 200,
-        message: "Datos Actualizados",
-        data: null,
-      }
-  } catch (error) {
+    const userId = datos[0].userId;
+    const respuesta = await getPermisosByUserId(userId);
+    const permisosActuales = respuesta.data ? respuesta.data?.map((datos) => ({
+      userId: datos.dataValues.userId,
+      menuId: datos.dataValues.menuId,
+    })) : [];
 
+    const agregar = datos.filter(
+      (dato) =>
+        !permisosActuales.some(
+          (permisoActual) =>
+            permisoActual.menuId === dato.menuId &&
+            permisoActual.userId === dato.userId
+        )
+    );
+
+    const eliminar = permisosActuales.filter(
+      (permisoActual) =>
+        !datos.some(
+          (dato) =>
+            dato.menuId === permisoActual.menuId &&
+            dato.userId === permisoActual.userId
+        )
+    );
+
+    await Permisos.bulkCreate(
+      agregar.map((elemento) => ({ userId, menuId: elemento.menuId })),
+      {
+        ignoreDuplicates: true,
+      }
+    );
+    await Permisos.destroy({
+      where: {
+        [Op.or]: eliminar.map((elemento) => ({ userId: elemento.userId, menuId: elemento.menuId })),
+      },
+      force: true,
+    });
+
+    return {
+      success: true,
+      responseCode: 200,
+      message: "Datos Actualizados",
+      data: null,
+    };
+  } catch (error) {
+    console.log(error.message);
   }
-}
+};

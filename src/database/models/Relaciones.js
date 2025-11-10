@@ -26,6 +26,7 @@ import Compras from './Compras.js';
 import DetalleCompras from './DetalleCompras.js';
 import Permisos from './Permisos.js';
 import Menus from './Menus.js';
+import Preferencias from './Preferencias.js';
 
 function aplicarRelaciones() {
 
@@ -483,6 +484,22 @@ function aplicarRelaciones() {
     as: 'FKUsersPermisos'
   });
  
+  Users.hasOne(Preferencias, {
+    foreignKey: 'userId',
+    sourceKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKUsersPreferencias'
+  })
+
+  Preferencias.belongsTo(Users, {
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKPermisosUsers'
+  })
+  
 } 
 
 

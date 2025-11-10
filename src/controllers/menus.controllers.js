@@ -56,6 +56,7 @@ export const updatePermisosByUserId = (async (req, res) => {
     const permisos = await MenusService.updatePermisosByUserId(req.body);
     return res.status(permisos.responseCode).json({
       success: permisos.success,
+      responseCode: permisos.responseCode,
       message: permisos.message,
       data: permisos.data ?? [],
     });

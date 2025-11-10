@@ -1,6 +1,7 @@
 import { QueryTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import { models, sequelize } from "../database/models/Relaciones.js";
+import Preferencias from "../database/models/Preferencias.js";
 const { Users, Passwords } = models;
 
 export const getUsers = async () => {
@@ -137,6 +138,13 @@ export const createUser = async (Datos) => {
       resetToken: null,
     };
     await Passwords.create(dataToSave, { transaction });
+    const preferenciaToSave = {
+      userId: nuevoUsuario.id,
+      darkMode: false,
+      profilePicture: null,
+    }
+    await Preferencias.create(preferenciaToSave, { transaction });
+    
     await transaction.commit();
     return {
       success: true,

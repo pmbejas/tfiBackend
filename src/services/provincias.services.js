@@ -5,7 +5,6 @@ const { Provincias } = models;
 
 export const getProvincias = async () => {
   const query = "SELECT * from provincias";
-
   try {
     const provincias = await sequelize.query(query, {
       type: QueryTypes.SELECT,
