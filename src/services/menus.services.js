@@ -88,3 +88,17 @@ export const getPermisosByUserId = async (userId) => {
     throw error;
   }
 };
+
+export const updatePermisosByUserId = (datos) => {
+  try {
+      console.log(datos);
+      return {
+        success: true,
+        responseCode: 200,
+        message: "Datos Actualizados",
+        data: null,
+      }
+  } catch (error) {
+
+  }
+}

@@ -50,3 +50,19 @@ export const getPermisosByUserId = async (req, res) => {
     });
   }
 };
+
+export const updatePermisosByUserId = (async (req, res) => {
+  try {
+    const permisos = await MenusService.updatePermisosByUserId(req.body);
+    return res.status(permisos.responseCode).json({
+      success: permisos.success,
+      message: permisos.message,
+      data: permisos.data ?? [],
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error interno al obtener los permisos del usuario",
+    });
+  }
+})
