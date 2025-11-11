@@ -13,6 +13,7 @@ import Provincias from './Provincias.js';
 import Ciudades from './Ciudades.js';
 import DomicilioProveedores from './DomicilioProveedores.js';
 import DomicilioClientes from './DomicilioClientes.js';
+import DomicilioUsuarios from './DomicilioUsuarios.js';
 import Vendedores from './Vendedores.js';
 import Marcas from './Marcas.js';
 import Categorias from './Categorias.js';
@@ -499,6 +500,39 @@ function aplicarRelaciones() {
     onUpdate: 'CASCADE',
     as: 'FKPermisosUsers'
   })
+
+  Users.hasMany(DomicilioUsuarios, {
+    foreignKey: 'userId',
+    sourceKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKUsersDomicilioUsuarios'
+  })
+
+  DomicilioUsuarios.belongsTo(Users, {
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKDomicilioUsuariosUsers'
+  })
+  
+  DomicilioUsuarios.hasMany(Ciudades, {
+    foreignKey: 'ciudadId',
+    sourceKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKDomicilioUsuariosCiudades'
+  })
+
+  Ciudades.belongsTo(DomicilioUsuarios, {
+    foreignKey: 'ciudadId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKCiudadesDomicilioUsuarios'
+  })
+
   
 } 
 
@@ -520,6 +554,7 @@ export const models = {
   Ciudades,
   DomicilioProveedores,
   DomicilioClientes,
+  DomicilioUsuarios,
   DescuentoClientes,
   Vendedores,
   Productos,
