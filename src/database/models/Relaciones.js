@@ -27,6 +27,7 @@ import DetalleCompras from './DetalleCompras.js';
 import Permisos from './Permisos.js';
 import Menus from './Menus.js';
 import Preferencias from './Preferencias.js';
+import PermisosRoles from './PermisosRoles.js';
 
 function aplicarRelaciones() {
 
@@ -500,6 +501,7 @@ function aplicarRelaciones() {
     as: 'FKPermisosUsers'
   })
   
+  //TODO: Relaciones de PErmisos Roles
 } 
 
 
@@ -532,7 +534,8 @@ export const models = {
   Compras,
   DetalleCompras,
   Menus,
-  Permisos
+  Permisos,
+  PermisosRoles,
 };
 
 export { sequelize };

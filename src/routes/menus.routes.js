@@ -7,6 +7,6 @@ const router = Router();
 router.get('/', MenusController.getMenus);
 router.get('/user/:id', MenusController.getMenusByUserId);
 router.get('/permisos/user/:id', MenusController.getPermisosByUserId);
-router.post('/permisos/user', MenusController.updatePermisosByUserId);
+router.patch('/permisos/user', MenusController.updatePermisosByUserId);
 
 export default router;
