@@ -6,6 +6,7 @@ const router = Router();
 
 router.get("/", VentasController.getVentas);
 router.get("/:idVenta", VentasController.getVentaById);
+router.get("/totales/vendedores", VentasController.getVentastotalesVendedores);
 router.use(authenticateToken);
 
 export default router;

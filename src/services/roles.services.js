@@ -120,3 +120,29 @@ export const updatePermisosByRolId = async (datos) => {
   }
 };
 
+export const deleteRolById = async (rolId) => {
+  try {
+    const resultado = await UserRoles.destroy({
+      where: { id: rolId },
+      force: true,
+    });
+    if (resultado === 0) {
+      return {
+        success: false,
+        responseCode: 404,
+        message: "Rol no encontrado",
+        data: null,
+      };
+    }
+    return {
+      success: true,
+      responseCode: 200,
+      message: "Rol eliminado correctamente",
+      data: null,
+    };
+  } catch (error) {
+    console.error("Error en roles.services.deleteRolById:", error); 
+    throw error;
+  }
+}
+

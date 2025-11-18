@@ -75,3 +75,16 @@ export const updatePermisosByRolId = ( async (req, res) => {
     });
   }
 })
+
+export const deleteRolById = async (req, res) => {
+  try {
+    const resultado = await UserRolesService.deleteRolById(req.params.idRol);
+    return res.status(resultado.responseCode).json(resultado);
+  } catch (error) {
+    console.error("Error en deleteRolById:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error interno al eliminar el rol",
+    });
+  }
+};

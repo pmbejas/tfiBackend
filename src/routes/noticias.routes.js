@@ -12,6 +12,6 @@ const newsLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-router.get('/', newsLimiter, NoticiasController.getNoticias);
+router.get('/', NoticiasController.getNoticias);
 
 export default router;

@@ -38,3 +38,19 @@ export const getVentaById = async (req, res) => {
         });
     }
 }
+
+export const getVentastotalesVendedores = async (req, res) => {
+    try {
+        const ventas = await VentasServices.getVentastotalesVendedores();
+        return res.status(ventas.responseCode).json({
+            success: true,
+            data: ventas ?? [],
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error interno al obtener productos',
+        });
+    }
+}
