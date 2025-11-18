@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { ProvinciasController } from "../controllers/controllers.index.js";
+import { ProductosController } from "../controllers/controllers.index.js"; 
 import { authenticateToken } from "../security/middlewares.js";
 
 const router = Router();
 
-router.get("/", ProvinciasController.getProvincias);
+router.get("/", ProductosController.getProductos);
 router.use(authenticateToken);
 
 export default router;

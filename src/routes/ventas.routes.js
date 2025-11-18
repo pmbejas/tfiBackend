@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { ProvinciasController } from "../controllers/controllers.index.js";
+import { VentasController } from "../controllers/controllers.index.js"; 
 import { authenticateToken } from "../security/middlewares.js";
 
 const router = Router();
 
-router.get("/", ProvinciasController.getProvincias);
+router.get("/", VentasController.getVentas);
+router.get("/:idVenta", VentasController.getVentaById);
 router.use(authenticateToken);
 
 export default router;
