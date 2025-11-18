@@ -3,6 +3,7 @@ import roleRoutes from './roles.routes.js';
 import menuRoutes from './menus.routes.js';
 import provincesRoutes from './provincias.routes.js'
 import domiciliosRoutes from './domicilios.routes.js'
+import noticiasRoutes from './noticias.routes.js'
 
 import config from '../config.js';
 
@@ -16,5 +17,6 @@ export function registerRoutes(app) {
     app.use(config.defaultRoute +'/roles', roleRoutes);   
     app.use(config.defaultRoute +'/menus', menuRoutes);
     app.use(config.defaultRoute +'/provincias', provincesRoutes);
-    app.use(config.defaultRoute + '/domicilios', domiciliosRoutes)
+    app.use(config.defaultRoute + '/domicilios', domiciliosRoutes);
+    app.use(config.defaultRoute + '/noticias', noticiasRoutes);
 }

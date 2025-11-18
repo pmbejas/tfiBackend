@@ -5,3 +5,4 @@ export * as UserRolesService from './roles.services.js';
 export * as MenusService from './menus.services.js';
 export * as ProvinciasService from './provincias.services.js'
 export * as DomiciliosService from './domicilios.services.js'
+export * as NoticiasService from './noticias.services.js'
