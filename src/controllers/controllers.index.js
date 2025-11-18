@@ -1,5 +1,3 @@
-import Proveedores from '../database/models/Proveedores.js';
-
 export * as UserController from './users.controllers.js';
 export * as PasswordController from './passwords.controllers.js';
 export * as ProveedorController from './proveedores.controllers.js';
@@ -10,4 +8,5 @@ export * as ProductosController from './productos.controllers.js';
 export * as ProveedoresController from './proveedores.controllers.js';
 export * as ClientesController from './clientes.controllers.js';
 export * as VentasController from './ventas.controllers.js';
-
+export * as DomiciliosController from './domicilios.controllers.js';
+export * as NoticiasController from './noticias.controllers.js';
