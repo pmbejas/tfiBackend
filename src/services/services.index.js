@@ -12,3 +12,4 @@ export * as ClientesService from './clientes.services.js';
 export * as VentasServices from './ventas.services.js';
 export * as DomiciliosService from './domicilios.services.js'
 export * as NoticiasService from './noticias.services.js'
+export * as TelefonosService from './telefonos.services.js'

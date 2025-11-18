@@ -8,6 +8,7 @@ import clientesRoutes from './clientes.routes.js';
 import ventasRoutes from './ventas.routes.js';
 import domiciliosRoutes from './domicilios.routes.js'
 import noticiasRoutes from './noticias.routes.js'
+import telefonosRoutes from './telefonos.routes.js'
 
 import config from '../config.js';
 
@@ -26,4 +27,5 @@ export function registerRoutes(app) {
     app.use(config.defaultRoute + '/ventas', ventasRoutes);
     app.use(config.defaultRoute + '/domicilios', domiciliosRoutes);
     app.use(config.defaultRoute + '/noticias', noticiasRoutes);
+    app.use(config.defaultRoute + '/telefonos', telefonosRoutes);
 }

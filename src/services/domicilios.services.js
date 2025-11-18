@@ -1,12 +1,18 @@
 import { QueryTypes } from "sequelize";
 import { models, sequelize } from "../database/models/Relaciones.js";
 
-const { DomicilioUsuarios } = models;
+const { TelefonosUsuarios } = models;
 
 export const getDomiciliosByUserId = async (userId) => {
+  const query = `SELECT du.*, c.name as nombreCiudad, p.id as provinciaId
+                  FROM DomicilioUsuarios du
+                  JOIN Ciudades c ON du.ciudadId = c.id
+                  JOIN Provincias p ON c.provinciaId = p.id
+                  WHERE userId = :userId`;
   try {
-    const domicilios = await DomicilioUsuarios.findAll({
-        where: { userId },
+    const domicilios = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+      replacements: { userId },
     });
     if (domicilios.length === 0) {
       return {

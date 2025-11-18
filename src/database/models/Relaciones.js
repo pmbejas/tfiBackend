@@ -29,6 +29,7 @@ import Permisos from './Permisos.js';
 import Menus from './Menus.js';
 import Preferencias from './Preferencias.js';
 import PermisosRoles from './PermisosRoles.js';
+import TelefonosUsuarios from './TelefonosUsuarios.js';
 
 function aplicarRelaciones() {
 
@@ -534,6 +535,21 @@ function aplicarRelaciones() {
     as: 'FKCiudadesDomicilioUsuarios'
   })
 
+  Users.hasMany(TelefonosUsuarios, {
+    foreignKey: 'userId',
+    sourceKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKUsersTelefonosUsuarios'
+  })
+
+  TelefonosUsuarios.belongsTo(Users, {
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    as: 'FKTelefonosUsuariosUsers'
+  })
   
   //TODO: Relaciones de PErmisos Roles
 } 
@@ -571,6 +587,7 @@ export const models = {
   Menus,
   Permisos,
   PermisosRoles,
+  TelefonosUsuarios
 };
 
 export { sequelize };

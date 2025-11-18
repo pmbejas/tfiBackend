@@ -10,3 +10,4 @@ export * as ClientesController from './clientes.controllers.js';
 export * as VentasController from './ventas.controllers.js';
 export * as DomiciliosController from './domicilios.controllers.js';
 export * as NoticiasController from './noticias.controllers.js';
+export * as TelefonosController from './telefonos.controllers.js';
